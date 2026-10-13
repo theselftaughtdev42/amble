@@ -31,13 +31,16 @@ One screen: a countdown to midnight, a big "I walked today" button, and a streak
 
 ## Run locally
 
+The project is managed with [uv](https://docs.astral.sh/uv/).
+
 ```sh
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements-dev.txt
-AMBLE_DEV_USER="Jane Doe" uvicorn --factory app.main:create_app --reload
+uv sync
+AMBLE_DEV_USER="Jane Doe" uv run uvicorn --factory app.main:create_app --reload
 ```
 
-Then open http://localhost:8000. Run the tests with `pytest`.
+Then open http://localhost:8000. Run the tests with `uv run pytest`.
+
+Add a dependency with `uv add <package>` (or `uv add --dev <package>` for dev-only tools); commit `pyproject.toml` and `uv.lock` together.
 
 ## Deploy
 

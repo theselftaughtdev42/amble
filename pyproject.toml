@@ -1,0 +1,23 @@
+[project]
+name = "amble"
+version = "0.1.0"
+description = "Simple web app for tracking daily walking"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.138",
+    "tzdata>=2024.1",
+    "uvicorn[standard]>=0.30",
+]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.27",
+    "pytest>=8",
+]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
