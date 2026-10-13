@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F4EBDD">
+<title>Amble</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&family=DM+Mono:wght@500&family=Oswald:wght@300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+<script src="/app.js" defer></script>
+</head>
+<body>
+<main class="screen" id="screen" aria-busy="true">
+  <header class="top">
+    <div class="brand">
+      <h1 class="wordmark">Amble</h1>
+      <p class="date" id="date">&nbsp;</p>
+    </div>
+    <span class="badge" id="badge" role="img" aria-label="Signed in"></span>
+  </header>
+
+  <section class="countdown">
+    <p class="countdown-label" id="countdown-label">Time left today</p>
+    <p class="countdown-time" id="countdown">--:--</p>
+  </section>
+
+  <section class="ring-wrap" id="ring-wrap">
+    <div class="ring" id="ring-todo">
+      <button class="walk-btn" id="walk-btn" type="button">I walked<br>today</button>
+    </div>
+    <div class="ring-done" id="ring-done" hidden>
+      <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#D9A521" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"></polyline></svg>
+      <p class="done-title">Walked!</p>
+      <p class="done-meta">Logged at <span id="logged-time"></span> · <button class="undo" id="undo-btn" type="button">Undo</button></p>
+    </div>
+  </section>
+
+  <section class="streak">
+    <p class="streak-count"><span class="streak-num" id="streak-num">0</span> <span class="streak-word">day streak</span></p>
+    <div class="dots" id="dots" aria-hidden="true"></div>
+    <p class="overflow" id="overflow" hidden></p>
+  </section>
+
+  <p class="error" id="error" role="alert" hidden></p>
+</main>
+<div class="steps" id="steps" aria-hidden="true"></div>
+</body>
+</html>
