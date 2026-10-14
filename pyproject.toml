@@ -1,6 +1,6 @@
 [project]
 name = "amble"
-version = "0.1.0"
+version = "0.0.0"
 description = "Simple web app for tracking daily walking"
 requires-python = ">=3.13"
 dependencies = [

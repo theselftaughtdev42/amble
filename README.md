@@ -49,6 +49,12 @@ docker build -t amble .
 docker run -d --name amble -v amble-data:/data -p 127.0.0.1:8000:8000 amble
 ```
 
+Or use the prebuilt image, which CI publishes to `ghcr.io/theselftaughtdev42/amble` on every push to `main` (`main`, `sha-<commit>`) and on `v*` tags (`1.2.3`, `1.2`). There is no `latest` tag; pin a version, or use `main` for testing:
+
+```sh
+docker run -d --name amble -v amble-data:/data -p 127.0.0.1:8000:8000 ghcr.io/theselftaughtdev42/amble:1.2.3
+```
+
 Put it behind an authentik **Proxy Provider** (or forward auth through your reverse proxy) pointing at the container.
 
 > **Important:** Amble trusts the `X-authentik-*` headers. Make sure the container is only reachable through authentik (bind it to localhost or an internal Docker network), otherwise anyone could send those headers themselves.
