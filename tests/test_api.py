@@ -128,6 +128,15 @@ def test_serves_frontend(client: TestClient) -> None:
     assert client.get("/api/nope", headers=HEADERS).status_code == 404
 
 
+def test_serves_pwa_files(client: TestClient) -> None:
+    manifest = client.get("/manifest.webmanifest")
+    assert manifest.headers["content-type"].startswith("application/manifest+json")
+    for icon in manifest.json()["icons"]:
+        assert client.get(icon["src"]).status_code == 200
+    sw = client.get("/sw.js")
+    assert "javascript" in sw.headers["content-type"]
+
+
 def test_streak_helper() -> None:
     today = date(2026, 10, 13)
     walked = {today - timedelta(days=n) for n in (0, 1, 2, 4)}
