@@ -234,5 +234,9 @@ document.addEventListener('visibilitychange', () => {
 });
 setInterval(tick, 1000);
 
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').catch((err) => console.error(err));
+}
+
 loadMe();
 refresh();
