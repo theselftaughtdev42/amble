@@ -42,14 +42,21 @@ Then open http://localhost:8000. Run the tests with `uv run pytest`.
 
 Add a dependency with `uv add <package>` (or `uv add --dev <package>` for dev-only tools); commit `pyproject.toml` and `uv.lock` together.
 
-## Deploy
+## Releases
+
+Releases are published by pushing a version tag on `main`:
 
 ```sh
-docker build -t amble .
-docker run -d --name amble -v amble-data:/data -p 127.0.0.1:8000:8000 amble
+git tag v1.2.3 && git push origin v1.2.3
 ```
 
-Or use the prebuilt image, which CI publishes to `ghcr.io/theselftaughtdev42/amble` on every push to `main` (`main`, `sha-<commit>`) and on `v*` tags (`1.2.3`, `1.2`). There is no `latest` tag; pin a version, or use `main` for testing:
+CI tests, builds and publishes the image as `ghcr.io/theselftaughtdev42/amble:<version>` (e.g. `ghcr.io/theselftaughtdev42/amble:1.2.3`). Tags that aren't on `main` are refused. Pull requests build the image without pushing it. Pushes to `main` also publish `main` and `sha-<commit>` tags for testing. There is no `latest` tag.
+
+The image serves the app on `0.0.0.0:8000`; the health endpoint is `/healthz`.
+
+## Deploy
+
+Pin an exact version:
 
 ```sh
 docker run -d --name amble -v amble-data:/data -p 127.0.0.1:8000:8000 ghcr.io/theselftaughtdev42/amble:1.2.3
