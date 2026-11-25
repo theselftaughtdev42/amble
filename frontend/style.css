@@ -63,6 +63,44 @@ button { font: inherit; }
   letter-spacing: 0.02em;
 }
 .badge:empty { visibility: hidden; }
+.badge {
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+.badge:focus-visible, .sign-out:focus-visible {
+  outline: 3px solid var(--green);
+  outline-offset: 3px;
+}
+
+/* Account menu */
+.account { position: relative; }
+.account-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 10;
+  min-width: 180px;
+  max-width: 260px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: #FFFBF4;
+  box-shadow: 0 8px 28px rgba(43, 33, 24, 0.16), 0 0 0 1px rgba(43, 33, 24, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.account-menu[hidden] { display: none; }
+.account-name {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.sign-out {
+  color: var(--orange);
+  font-weight: 600;
+  text-decoration: none;
+}
+.sign-out:hover { text-decoration: underline; }
 
 /* Countdown */
 .countdown { display: flex; flex-direction: column; align-items: center; gap: 4px; }
