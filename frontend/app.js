@@ -11,6 +11,9 @@ const el = {
   screen: $('screen'),
   date: $('date'),
   badge: $('badge'),
+  accountMenu: $('account-menu'),
+  accountName: $('account-name'),
+  signOut: $('sign-out'),
   countdownLabel: $('countdown-label'),
   countdown: $('countdown'),
   ringWrap: $('ring-wrap'),
@@ -219,12 +222,32 @@ async function loadMe() {
   try {
     const me = await api('GET', '/api/me');
     el.badge.textContent = me.initials;
-    el.badge.setAttribute('aria-label', `Signed in as ${me.name}`);
+    el.badge.setAttribute('aria-label', `Account: ${me.name}`);
     el.badge.title = me.name;
+    el.accountName.textContent = me.name;
+    el.signOut.hidden = !me.can_sign_out;
   } catch (err) {
     console.error(err);
   }
 }
+
+// ---------- Account menu ----------
+
+function setMenuOpen(open) {
+  el.accountMenu.hidden = !open;
+  el.badge.setAttribute('aria-expanded', String(open));
+}
+
+el.badge.addEventListener('click', () => setMenuOpen(el.accountMenu.hidden));
+document.addEventListener('click', (event) => {
+  if (!el.accountMenu.hidden && !event.target.closest('.account')) setMenuOpen(false);
+});
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && !el.accountMenu.hidden) {
+    setMenuOpen(false);
+    el.badge.focus();
+  }
+});
 
 el.walkBtn.addEventListener('click', logWalk);
 el.undoBtn.addEventListener('click', undoWalk);

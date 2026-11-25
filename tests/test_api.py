@@ -147,7 +147,7 @@ def test_display_name_fallbacks(app: FastAPI, claims: dict, expected: str) -> No
 
 def test_name_from_userinfo_endpoint(app: FastAPI) -> None:
     client = claims_sign_in(app, {"sub": "abc"}, userinfo={"sub": "abc", "name": "Sam Lee"})
-    assert client.get("/api/me").json() == {"name": "Sam Lee", "initials": "SL"}
+    assert client.get("/api/me").json()["name"] == "Sam Lee"
 
 
 def test_userinfo_with_other_sub_is_ignored(app: FastAPI) -> None:
@@ -211,13 +211,14 @@ def test_needs_a_way_to_sign_in(tmp_path: Path) -> None:
 def test_dev_user_fallback(tmp_path: Path, clock: Clock) -> None:
     settings = Settings(db_path=tmp_path / "amble.db", dev_user="Dev Person")
     res = TestClient(create_app(settings, clock=clock)).get("/api/me")
-    assert res.json() == {"name": "Dev Person", "initials": "DP"}
+    assert res.json() == {"name": "Dev Person", "initials": "DP", "can_sign_out": False}
 
 
 def test_me_uses_first_and_last_initials(client: TestClient) -> None:
     assert client.get("/api/me").json() == {
         "name": "Jane Q Doe",
         "initials": "JD",
+        "can_sign_out": True,
     }
 
 

@@ -25,11 +25,13 @@ NAME_CLAIMS = ("name", "preferred_username", "email")
 class User:
     username: str
     name: str
+    signed_in: bool = True  # False for the AMBLE_DEV_USER stand-in
 
 
 class Me(BaseModel):
     name: str
     initials: str
+    can_sign_out: bool
 
 
 class Today(BaseModel):
@@ -146,7 +148,7 @@ def create_app(
         if user := request.session.get("user"):
             return User(user["username"], user["name"])
         if settings.dev_user:
-            return User("dev", settings.dev_user)
+            return User("dev", settings.dev_user, signed_in=False)
         raise HTTPException(status_code=401, detail="Not signed in")
 
     CurrentUser = Annotated[User, Depends(current_user)]
@@ -172,7 +174,7 @@ def create_app(
 
     @app.get("/api/me")
     def me(user: CurrentUser) -> Me:
-        return Me(name=user.name, initials=initials(user.name))
+        return Me(name=user.name, initials=initials(user.name), can_sign_out=user.signed_in)
 
     @app.get("/api/today")
     def get_today(user: CurrentUser) -> Today:

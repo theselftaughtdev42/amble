@@ -25,7 +25,13 @@
       <h1 class="wordmark">Amble</h1>
       <p class="date" id="date">&nbsp;</p>
     </div>
-    <span class="badge" id="badge" role="img" aria-label="Signed in"></span>
+    <div class="account">
+      <button class="badge" id="badge" type="button" aria-expanded="false" aria-controls="account-menu" aria-label="Account"></button>
+      <div class="account-menu" id="account-menu" hidden>
+        <p class="account-name" id="account-name"></p>
+        <a class="sign-out" id="sign-out" href="/auth/logout" hidden>Sign out</a>
+      </div>
+    </div>
   </header>
 
   <section class="countdown">
