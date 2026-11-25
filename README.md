@@ -82,7 +82,7 @@ docker run -d --name amble -v amble-data:/data -p 127.0.0.1:8000:8000 \
 Register Amble with your OIDC provider as a confidential web application (authorization code flow):
 
 - **Redirect URI:** `https://amble.example.com/auth/callback`
-- **Post-logout redirect URI** (optional): `https://amble.example.com/`, so signing out comes back to Amble
+- **Post-logout redirect URI** (optional): `https://amble.example.com/signed-out.html`, so signing out comes back to Amble
 - **Scopes:** `openid profile email`
 
 Put a TLS-terminating reverse proxy in front of the container. If the provider advertises an `end_session_endpoint`, `/auth/logout` signs the person out there too; otherwise it only ends the Amble session.

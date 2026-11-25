@@ -187,7 +187,14 @@ def test_rejects_unknown_token_auth_method(monkeypatch: pytest.MonkeyPatch) -> N
 def test_logout_clears_session(client: TestClient) -> None:
     res = client.get("/auth/logout", follow_redirects=False)
     assert res.status_code == 303
+    assert res.headers["location"] == "/signed-out.html"
     assert client.get("/api/me").status_code == 401
+
+
+def test_signed_out_page_is_public(anon: TestClient) -> None:
+    res = anon.get("/signed-out.html")
+    assert res.status_code == 200
+    assert "logged out" in res.text
 
 
 def test_logout_signs_out_at_provider(client: TestClient, app: FastAPI) -> None:
@@ -200,6 +207,7 @@ def test_logout_signs_out_at_provider(client: TestClient, app: FastAPI) -> None:
     location = res.headers["location"]
     assert location.startswith("https://auth.example.com/end-session?")
     assert "id_token_hint=id-token" in location
+    assert "post_logout_redirect_uri=http%3A%2F%2Ftestserver%2Fsigned-out.html" in location
     assert client.get("/api/me").status_code == 401
 
 
