@@ -38,11 +38,10 @@ async function api(method, path) {
     method,
     headers: { Accept: 'application/json' },
     credentials: 'same-origin',
-    redirect: 'manual',
   });
-  // authentik redirects to its login page once the session runs out.
-  if (res.type === 'opaqueredirect' || res.status === 401) {
-    window.location.reload();
+  // Not signed in (or the session ran out): start the OIDC sign-in.
+  if (res.status === 401) {
+    window.location.assign('/auth/login');
     throw new Error('Signed out');
   }
   if (!res.ok) throw new Error(`${method} ${path} failed (${res.status})`);

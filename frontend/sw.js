@@ -1,9 +1,9 @@
 'use strict';
 
-// Network first, so the app stays fresh and authentik can still redirect to
-// its login page. The cache only steps in when the network is unreachable.
-// API calls are never cached: they always need the live answer.
-const CACHE = 'amble-v1';
+// Network first, so the app stays fresh. The cache only steps in when the
+// network is unreachable. API and sign-in routes are never cached: they
+// always need the live answer.
+const CACHE = 'amble-v2';
 const SHELL = [
   '/',
   '/style.css',
@@ -18,7 +18,7 @@ const FONT_HOSTS = ['fonts.googleapis.com', 'fonts.gstatic.com'];
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE)
-      // A failed precache (e.g. signed out) shouldn't block installing.
+      // A failed precache shouldn't block installing.
       .then((cache) => Promise.allSettled(SHELL.map((url) => cacheIfFresh(cache, url))))
       .then(() => self.skipWaiting()),
   );
@@ -37,7 +37,8 @@ self.addEventListener('fetch', (event) => {
   if (request.method !== 'GET') return;
   const url = new URL(request.url);
   const sameOrigin = url.origin === self.location.origin;
-  if (sameOrigin && (url.pathname.startsWith('/api/') || url.pathname === '/healthz')) return;
+  const live = ['/api/', '/auth/'].some((p) => url.pathname.startsWith(p));
+  if (sameOrigin && (live || url.pathname === '/healthz')) return;
   if (!sameOrigin && !FONT_HOSTS.includes(url.hostname)) return;
   event.respondWith(networkFirst(request));
 });
