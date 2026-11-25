@@ -20,6 +20,9 @@ from .streak import current_streak, initials
 # Tried in order for the display name; the user's sub is the last resort.
 NAME_CLAIMS = ("name", "preferred_username", "email")
 
+# Where signing out lands (a static page in the frontend).
+SIGNED_OUT_PAGE = "/signed-out.html"
+
 
 @dataclass(frozen=True)
 class User:
@@ -139,10 +142,10 @@ def create_app(
                 # Sign out at the provider too, then come back to Amble.
                 return await provider.logout_redirect(
                     request,
-                    post_logout_redirect_uri=absolute_url(request, "/"),
+                    post_logout_redirect_uri=absolute_url(request, SIGNED_OUT_PAGE),
                     id_token_hint=id_token,
                 )
-            return RedirectResponse("/", status_code=303)
+            return RedirectResponse(SIGNED_OUT_PAGE, status_code=303)
 
     def current_user(request: Request) -> User:
         if user := request.session.get("user"):
